@@ -1,0 +1,39 @@
+.system-info {
+  position: absolute;
+  right: 3%;
+  top: 10%;
+  max-height: 70vh;
+  z-index: 300;
+  display: flex;
+  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  color: azure;
+  gap: 10px;
+  overflow: auto;
+}
+
+.autocompleteInput {
+  color: white;
+
+}
+
+.system-info::-webkit-scrollbar {
+  width: 5px; /* Ancho de la barra de desplazamiento */
+}
+
+.system-info::-webkit-scrollbar-track {
+  background: transparent; /* Color de fondo de la pista de la barra de desplazamiento */
+}
+
+.system-info::-webkit-scrollbar-thumb {
+  background-color: white; /* Color del control deslizante de la barra de desplazamiento */
+  border-radius: 10px; /* Redondeo de las esquinas del control deslizante */
+}
+
+/* Para otros navegadores que no sean de WebKit, puedes usar scrollbar-color y scrollbar-width */
+.system-info {
+  scrollbar-color: white transparent; /* Color del control deslizante y de la pista */
+  scrollbar-width: thin; /* Ancho de la barra de desplazamiento */
+}

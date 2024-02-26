@@ -1,0 +1,236 @@
+/* General styles for body and text */
+html,
+body {
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+html {
+    font-size: 80%;
+    color: #AADAFA;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+/* Container for the solar system visualization */
+.wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.earth {
+    width: 20px;
+    /* Ajusta según la escala de tu sistema solar */
+    height: 20px;
+    /* Ajusta según la escala de tu sistema solar */
+    background-color: #1E90FF;
+    /* Color azul para representar la Tierra */
+    margin-left: -10px;
+    /* Ajusta para centrar el planeta en su órbita */
+    margin-top: -10px;
+    /* Ajusta si es necesario para alinear verticalmente */
+}
+
+@keyframes orbit {
+    from {
+        transform: rotate(0deg) translateX(var(--orbit-x)) rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg) translateX(var(--orbit-x)) rotate(-360deg);
+    }
+}
+
+
+/* Main solar system styling */
+#solar {
+    position: relative;
+    width: 720px;
+    height: 720px;
+    display: none;
+}
+
+/* Sun styling */
+.sun {
+    position: absolute;
+    top: var(--top, 50%);
+    /* Valor por defecto 50% */
+    left: var(--left, 50%);
+    /* Valor por defecto 50% */
+    height: 60px;
+    width: 60px;
+    margin-top: -30px;
+    margin-left: -30px;
+    border-radius: 50%;
+    background: #F7F788;
+    box-shadow: inset 0 0 6px red, 0 0 36px red;
+}
+
+/* 
+.planet {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #1E90FF;
+    border-radius: 50%;
+    animation: orbit 10s infinite linear;
+    box-shadow: 0 0 8px 4px rgba(30, 144, 255, 0.6);
+    transform-origin: -50% -50%;
+    top: 50%;
+    left: 50%;
+    margin-left: -10px;
+    margin-top: -10px;
+} */
+
+/* .planetOrbit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 1px solid #112B3D;
+    border-radius: 50%;
+    width: 300px;
+    height: 300px;
+    margin-top: -150px;
+    margin-left: -150px;
+} */
+
+/* Styling for specific planets */
+.earth,
+.venus,
+.merc,
+.mars,
+.jup,
+.sat,
+.ura,
+.nep {
+    /* Customize each planet's appearance here */
+}
+
+/* Since the JSX provided does not specify animations or social media icons, 
+     those styles have been removed to match the JSX content. */
+
+
+.universe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 100dvh;
+}
+
+@keyframes giro-horario {
+    0% {
+        transform: rotate(0deg) translateX(var(--orbit-x)) rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg) translateX(var(--orbit-x)) rotate(-360deg);
+    }
+}
+
+@keyframes giro-antihorario {
+    0% {
+        transform: rotate(0deg) translateX(var(--orbit-x)) rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(-360deg) translateX(var(--orbit-x)) rotate(360deg);
+    }
+}
+
+
+.elemento2D {
+    transform-origin: center;
+    transform: rotateX(-60deg) !important;
+}
+
+
+.elemento3D {
+    transform: rotateX(60deg) !important;
+    transform-style: preserve-3d;
+}
+
+
+.container {
+    perspective: 1000px;
+}
+
+@keyframes zoomOut {
+    to {
+        transform: scale(0.005);
+        /* Ajusta este valor según sea necesario */
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.005);
+        /* Ajusta este valor según sea necesario */
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+.zoomOut {
+    animation: zoomOut 1s forwards;
+}
+
+.zoomIn {
+    animation: zoomIn 1s forwards;
+}
+
+.zoomOut {
+    animation: zoomOut 1s forwards;
+}
+
+.zoomIn {
+    animation: zoomIn 1s forwards;
+}
+
+.star-zoom-out {
+    animation-name: zoom-out;
+    animation-duration: 2s;
+    /* Duración de la animación */
+    animation-timing-function: ease-in-out;
+    /* Curva de velocidad de la animación */
+    animation-fill-mode: forwards;
+    /* Mantiene el estado final después de que la animación termine */
+}
+
+@keyframes goToPlanet {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        /* Los valores aquí serán reemplazados dinámicamente con JavaScript */
+        transform: translate(--posX, --posY);
+        /* Ejemplo estático */
+    }
+}
+
+@keyframes goToStar {
+
+    100% {
+        /* Los valores aquí serán reemplazados dinámicamente con JavaScript */
+        transform: translate(0, 0);
+        /* Ejemplo estático */
+    }
+}
+
+.toPlanet {
+    animation: goToPlanet 1s forwards !important;
+}
+
+.toStar {
+    animation: goToStar 1s forwards;
+}
