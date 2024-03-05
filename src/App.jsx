@@ -108,7 +108,6 @@ const App = () => {
   const fetchPlanets = async () => {
     try {
       //"HD 28254"
-      console.log("pidiendo planeta")
       const response = await axios.get('/api/sync?query=' + encodeURIComponent(`SELECT * FROM ps WHERE hostname='${selectedStar}'`) + '&format=json');
       const uniquePlanets = Array.from(new Map(response.data.map(planet => [planet.pl_name, planet])).values());
       setPlanets(uniquePlanets);
@@ -152,7 +151,7 @@ const App = () => {
       {<Loading loading={loadingSymbol} starLoading={starLoading} mainMenu={onMainView}></Loading>}
       {!starLoading && <div className='fadeInLoading'>
         {<ReducedSystem planets={planetasEjemplo} topPos={0} leftPos={0} mainView={onMainView} />}
-        {!onMainView && <System planets={planets} setLoadingSymbol={setLoadingSymbol} TD={TD} loading={loading} selectedPlanet={selectedPlanet} setSelectedPlanet={setSelectedPlanet} setShowSystem={setShowSystem} showSystem={showSystem}></System>}
+        {!onMainView && <System planets={planets} onMobile={isMobileOrTablet} setLoadingSymbol={setLoadingSymbol} TD={TD} loading={loading} selectedPlanet={selectedPlanet} setSelectedPlanet={setSelectedPlanet} setShowSystem={setShowSystem} showSystem={showSystem}></System>}
         {<Box className={`search-bar-container ${!onMainView ? 'moveFromCenter' : ''}`}
           style={{ visibility: visibility ? 'visible' : 'hidden' }}>
           <h1 className={!onMainView ? 'fadeOut' : ''}
@@ -204,7 +203,7 @@ const App = () => {
 
         {!onMainView && firstLoading && visibility && (
           isMobileOrTablet
-            ? <SwipeablePlanetComponent setSelectedPlanet={setSelectedPlanet} planets={planets}></SwipeablePlanetComponent>
+            ? <SwipeablePlanetComponent showSystem={showSystem} setSelectedPlanet={setSelectedPlanet} planets={planets}></SwipeablePlanetComponent>
             : <div className='system-info'><PlanetAccordion planets={planets} setSelectedPlanet={setSelectedPlanet} showSystem={showSystem} /></div>
         )}
         {!onMainView && (

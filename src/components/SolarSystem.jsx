@@ -3,9 +3,10 @@ import './SolarSystem.css'; // Ensure this CSS file contains only the necessary 
 import { useState, useEffect, useRef } from 'react';
 import usePlanetOrbits from './usePlanetOrbits.jsx';
 import Draggable from 'react-draggable';
+import Slider from '@mui/material/Slider';
 
 
-const SolarSystem = ({ planets = [], TD, loading, selectedPlanet, setShowSystem, topPos, leftPos, setLoadingSymbol }) => {
+const SolarSystem = ({ planets = [], TD, loading, selectedPlanet, setShowSystem, topPos, leftPos, setLoadingSymbol, onMobile }) => {
 
     let previousRad = 200;
     const AUaPixeles = 0.5;
@@ -19,6 +20,7 @@ const SolarSystem = ({ planets = [], TD, loading, selectedPlanet, setShowSystem,
     const [hasAnimated, setHasAnimated] = useState(false);
     const [selectedPlanetIndex, setSelectedPlanetIndex] = useState(-1); // Nuevo estado para el índice
     const [keepInvisible, setKeepInvisible] = useState(true);
+    const [showBar, setShowBar] = useState(false);
 
     useEffect(() => {
         let index = -1;
@@ -28,6 +30,9 @@ const SolarSystem = ({ planets = [], TD, loading, selectedPlanet, setShowSystem,
         setSelectedPlanetIndex(index);
     }, [selectedPlanet, planets]);
 
+    const handleZoomChange = (event, newValue) => {
+        setScale(newValue);
+    };
 
     useEffect(() => {
         const animateCameraToPosition = (targetX, targetY) => {
@@ -107,7 +112,9 @@ const SolarSystem = ({ planets = [], TD, loading, selectedPlanet, setShowSystem,
             setScale(1)
             // Elimina la clase zoomIn una vez que la animación termina
             solarElement.classList.remove('zoomIn');
+            setShowBar(true);
             // Elimina el escuchador para evitar que se ejecute múltiples veces
+
             solarElement.removeEventListener('animationend', handleAnimationEnd);
         }
     };
@@ -122,6 +129,7 @@ const SolarSystem = ({ planets = [], TD, loading, selectedPlanet, setShowSystem,
 
         if (loading) {
             setShowSystem(false);
+            setShowBar(false);
             solarElement.classList.remove('zoomIn');
             setScale(1);
             if (!keepInvisible) {
@@ -226,8 +234,34 @@ const SolarSystem = ({ planets = [], TD, loading, selectedPlanet, setShowSystem,
 
 
     return (
-
         <div className="universe" onWheel={handleWheel}>
+            {onMobile && <Slider
+                orientation="vertical"
+                value={scale}
+                className={showBar ? 'fadeIn' : 'fadeOut'}
+                onChange={handleZoomChange}
+                aria-labelledby="vertical-slider"
+                min={0.1} // Mínimo valor de zoom
+                max={3} // Máximo valor de zoom
+                step={0.01} // Ajusta el paso para controlar la suavidad del zoom
+                sx={{
+                    position: 'absolute',
+                    height: 300, // Ajusta según necesites
+                    top: '50%',
+                    right: '8px',
+                    transform: 'translateY(-50%)',
+                    zIndex: '10000',
+                    '& .MuiSlider-thumb': {
+                        color: 'white', // Color del control deslizante (thumb)
+                    },
+                    '& .MuiSlider-track': {
+                        color: 'white', // Color de la pista
+                    },
+                    '& .MuiSlider-rail': {
+                        color: '#bfbfbf', // Color del riel
+                    },
+                }}
+            />}
             <Draggable
                 position={selectedPlanet.length !== 0 && position}
                 disabled={selectedPlanet.length !== 0}

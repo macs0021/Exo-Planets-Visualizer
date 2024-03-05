@@ -40,7 +40,7 @@ const PlanetInfo = ({ planet }) => (
 );
 
 // Componente principal que maneja la navegación entre planetas y la visualización de su información
-const SwipeablePlanetComponent = ({ planets, setSelectedPlanet }) => {
+const SwipeablePlanetComponent = ({ planets, setSelectedPlanet, showSystem }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [expanded, setExpanded] = useState(false);
 
@@ -65,7 +65,7 @@ const SwipeablePlanetComponent = ({ planets, setSelectedPlanet }) => {
   }
 
   return (
-    <Container>
+    <Container className={showSystem ? 'fadeIn' : 'fadeOut'}>
       <IconButton disableRipple disableFocusRipple style={{ color: 'white', opacity: currentIndex === 0 ? '0.2' : '1' }} onClick={() => handleSwipe('right')}><ArrowBackIosNewIcon /></IconButton>
       <TextContainer onClick={() => onClick(planets[currentIndex]?.pl_name)}>
         <Typography variant="h6" style={{ fontFamily: 'Nasalization, Arial', fontSize: '1.5rem' }}>
