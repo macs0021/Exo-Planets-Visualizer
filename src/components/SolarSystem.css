@@ -33,6 +33,14 @@ html {
     /* Ajusta si es necesario para alinear verticalmente */
 }
 
+.solar.hidden {
+    visibility: hidden;
+}
+
+.solar.visible {
+    visibility: visible;
+}
+
 @keyframes orbit {
     from {
         transform: rotate(0deg) translateX(var(--orbit-x)) rotate(0deg);
@@ -45,11 +53,11 @@ html {
 
 
 /* Main solar system styling */
-#solar {
+.solar {
     position: relative;
     width: 720px;
     height: 720px;
-    display: none;
+    /* visibility: hidden; */
 }
 
 /* Sun styling */
@@ -145,7 +153,6 @@ html {
     }
 }
 
-
 .elemento2D {
     transform-origin: center;
     transform: rotateX(-60deg) !important;
@@ -165,6 +172,8 @@ html {
 @keyframes zoomOut {
     to {
         transform: scale(0.005);
+        /* visibility: hidden; */
+        /* opacity: 0; */
         /* Ajusta este valor según sea necesario */
     }
 }
@@ -173,10 +182,12 @@ html {
     from {
         transform: scale(0.005);
         /* Ajusta este valor según sea necesario */
+        /* opacity: 0; */
     }
 
     to {
         transform: scale(1);
+        /* opacity: 1; */
     }
 }
 
@@ -233,4 +244,13 @@ html {
 
 .toStar {
     animation: goToStar 1s forwards;
+}
+
+@keyframes goToScale {
+
+    100% {
+        /* Los valores aquí serán reemplazados dinámicamente con JavaScript */
+        transform: scale(1)
+        /* Ejemplo estático */
+    }
 }

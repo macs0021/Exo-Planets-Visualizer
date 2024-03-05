@@ -5,7 +5,7 @@ import usePlanetOrbits from './usePlanetOrbits.jsx';
 import Draggable from 'react-draggable';
 
 
-const SolarSystem = ({ planets = [], TD, loading, setSelectedPlanet, selectedPlanet }) => {
+const SolarSystem = ({ planets = [], TD, loading, selectedPlanet, setShowSystem, topPos, leftPos, setLoadingSymbol }) => {
 
     let previousRad = 200;
     const AUaPixeles = 0.5;
@@ -14,11 +14,11 @@ const SolarSystem = ({ planets = [], TD, loading, setSelectedPlanet, selectedPla
     const [perspective, setPerspective] = useState(TD);
     const [scale, setScale] = useState(1);
     const [starPositions, setStarPositions] = useState([]);
-    const [systemVisibility, setSystemVisibility] = useState(false);
     const [cameraPosition, setCameraPosition] = useState({ x: 0, y: 0 })
     const [position, setPosition] = useState({ x: 0, y: 0 });
     const [hasAnimated, setHasAnimated] = useState(false);
     const [selectedPlanetIndex, setSelectedPlanetIndex] = useState(-1); // Nuevo estado para el índice
+    const [keepInvisible, setKeepInvisible] = useState(true);
 
     useEffect(() => {
         let index = -1;
@@ -27,74 +27,6 @@ const SolarSystem = ({ planets = [], TD, loading, setSelectedPlanet, selectedPla
         }
         setSelectedPlanetIndex(index);
     }, [selectedPlanet, planets]);
-
-
-    function getCurrentPosition(element) {
-        const style = window.getComputedStyle(element);
-        const matrix = new DOMMatrix(style.transform);
-        return { x: matrix.m41, y: matrix.m42 };
-    }
-
-
-    /*     useEffect(() => {
-            if (selectedPlanet.length !== 0) {
-                const planetIndex = planets.findIndex(planet => planet.pl_name === selectedPlanet);
-                const planetToFollow = planetPositions[planetIndex];
-                // Calcula la nueva posición de la cámara para centrar el planeta
-                // Asumiendo que `planetToFollow.posX` y `planetToFollow.posY` son las coordenadas del planeta en el "mundo"
-                // y que la cámara se "mueve" ajustando su posición relativa al mundo.
-                const cameraX = planetToFollow.posX;
-                const cameraY = planetToFollow.posY;
-                if (planetToFollow) {
-                    setScale(1);
-                    setCameraPosition({
-                        x: cameraX,
-                        y: cameraY
-                    });
-                }
-            }
-        }, [selectedPlanet, planetPositions]); */
-
-    /* useEffect(() => {
-        if (selectedPlanet.length !== 0) {
-            const planetIndex = planets.findIndex(planet => planet.pl_name === selectedPlanet);
-            const planetToFollow = planetPositions[planetIndex];
-            if (planetToFollow) {
-                const targetX = planetToFollow.posX;
-                const targetY = planetToFollow.posY;
-    
-                const animateCamera = () => {
-                    // Suponiendo que cameraPosition es tu estado actual para la posición de la cámara
-                    setScale(1)
-                    const { x: currentX, y: currentY } = cameraPosition;
-    
-                    // Calcular la diferencia
-                    const diffX = targetX - currentX;
-                    const diffY = targetY - currentY;
-    
-                    // Determinar el paso de la animación (ajusta este valor según necesites)
-                    const step = 0.05; // Este es el porcentaje de la distancia que moverás la cámara en cada frame
-    
-                    // Calcular la nueva posición
-                    const newX = currentX + diffX * step;
-                    const newY = currentY + diffY * step;
-    
-                    // Actualizar la posición de la cámara
-                    setCameraPosition({ x: newX, y: newY });
-    
-                    // Chequear si hemos llegado lo suficientemente cerca de la posición objetivo
-                    if (Math.abs(diffX) > 1 || Math.abs(diffY) > 1) {
-                        // Si no, continuar la animación
-                        requestAnimationFrame(animateCamera);
-                    }
-                };
-    
-                // Iniciar la animación
-                requestAnimationFrame(animateCamera);
-            }
-        }
-    }, [selectedPlanet, planetPositions]); */
-
 
 
     useEffect(() => {
@@ -107,7 +39,7 @@ const SolarSystem = ({ planets = [], TD, loading, setSelectedPlanet, selectedPla
             const diffY = targetY - currentY;
 
             // Determinar el paso de la animación
-            const step = 0.07; // Este es el porcentaje de la distancia que moverás la cámara en cada frame
+            const step = 0.09; // Este es el porcentaje de la distancia que moverás la cámara en cada frame
 
             // Calcular la nueva posición
             const newX = currentX + diffX * step;
@@ -126,7 +58,7 @@ const SolarSystem = ({ planets = [], TD, loading, setSelectedPlanet, selectedPla
         if (selectedPlanet.length !== 0) {
             if (selectedPlanetIndex !== -1) {
                 const planetToFollow = planetPositions[selectedPlanetIndex];
-                setScale(1); // Asumiendo que quieres resetear el zoom cuando cambias de planeta
+                //setScale(1); // Asumiendo que quieres resetear el zoom cuando cambias de planeta
                 animateCameraToPosition(planetToFollow.posX, planetToFollow.posY);
             }
         } else {
@@ -166,41 +98,55 @@ const SolarSystem = ({ planets = [], TD, loading, setSelectedPlanet, selectedPla
         setStarPositions(positions);
     }, []);
 
-    const handleAnimationEnd = () => {
-        const solarElement = document.getElementById('solar');
-        setScale(1)
-        // Elimina la clase zoomIn una vez que la animación termina
-        solarElement.classList.remove('zoomIn');
-
-        // Elimina el escuchador para evitar que se ejecute múltiples veces
-        solarElement.removeEventListener('animationend', handleAnimationEnd);
+    const handleAnimationEnd = (event) => {
+        if (event.animationName === 'zoomOut') { // Asegúrate de que el nombre de la animación coincida
+            setLoadingSymbol(true); // Cambia el estado después de que la animación de zoomOut finalice
+            // Puedes realizar más acciones aquí si es necesario
+        } else {
+            const solarElement = document.getElementById('solar');
+            setScale(1)
+            // Elimina la clase zoomIn una vez que la animación termina
+            solarElement.classList.remove('zoomIn');
+            // Elimina el escuchador para evitar que se ejecute múltiples veces
+            solarElement.removeEventListener('animationend', handleAnimationEnd);
+        }
     };
+
+    useEffect(() => {
+        const solarElement = document.getElementById('solar');
+        solarElement.style.display = 'hidden';
+    }, [])
 
     useEffect(() => {
         const solarElement = document.getElementById('solar');
 
         if (loading) {
-            // Asegúrate de que no hay clases de animación previas
+            setShowSystem(false);
             solarElement.classList.remove('zoomIn');
-            // Aplica la animación de zoom out inmediatamente
-            setScale(1)
-            setSystemVisibility(true)
+            setScale(1);
+            if (!keepInvisible) {
+                solarElement.style.display = 'block';
+            } else {
+                setKeepInvisible(false);
+            }
             solarElement.classList.add('zoomOut');
+            solarElement.addEventListener('animationend', handleAnimationEnd); // Registra el listener aquí
         } else {
-            setSystemVisibility(false)
-            setScale(0.005)
-            // Elimina la clase de zoom out para prevenir la repetición de la animación
+            setScale(0.005);
+            solarElement.style.display = 'none';
             solarElement.classList.remove('zoomOut');
-            // Espera 1 segundo después de que loading sea false antes de iniciar el zoom in
-            const timeoutId = setTimeout(() => {
-                solarElement.classList.add('zoomIn');
-                setSystemVisibility(true);
-                solarElement.addEventListener('animationend', handleAnimationEnd);
-            }, 1000); // Espera 1000 ms antes de aplicar la clase zoomIn
+            solarElement.removeEventListener('animationend', handleAnimationEnd); // Asegúrate de remover el listener aquí
 
-            // Limpieza para cancelar el timeout si el componente se desmonta o si loading cambia antes de que el timeout se complete
+            const timeoutId = setTimeout(() => {
+                setLoadingSymbol(false);
+                solarElement.classList.add('zoomIn');
+                solarElement.style.display = 'block';
+                setShowSystem(true);
+            }, 1000);
+
             return () => {
-                clearTimeout(timeoutId)
+                clearTimeout(timeoutId);
+                setLoadingSymbol(false);
                 solarElement.removeEventListener('animationend', handleAnimationEnd);
             };
         }
@@ -219,19 +165,7 @@ const SolarSystem = ({ planets = [], TD, loading, setSelectedPlanet, selectedPla
               newScale = 0.2;
           } */
         setScale(newScale); // Actualiza el estado de la escala
-        const solarElement = document.getElementById('solar');
-        if (solarElement.classList.contains("zoomIn")) {
-            setScale(1)
-            solarElement.classList.remove('zoomIn')
-        };
     };
-
-    function removeZoomIn() {
-        const solarElement = document.getElementById('solar');
-        if (solarElement.classList.contains("zoomIn")) {
-            solarElement.classList.remove('zoomIn')
-        };
-    }
 
     function calcularDimensionesOrbita(semiejeMayor, excentricidad) {
         // Calcular el semieje menor
@@ -299,13 +233,12 @@ const SolarSystem = ({ planets = [], TD, loading, setSelectedPlanet, selectedPla
                 disabled={selectedPlanet.length !== 0}
             >
                 <div>
-                    <div id="solar" className={`solar`} style={{
-                        width: '100%', height: '100%', transform:
-                            `scale(${scale}) translate(${-cameraPosition?.x}px, ${-cameraPosition?.y}px) `,
-                        display: systemVisibility ? 'block' : 'none'
+                    {<div id="solar" className={`solar`} style={{
+                        width: '100%', height: '100%', display: 'none', transform:
+                            `scale(${scale}) translate(${-cameraPosition.x}px, ${-cameraPosition.y}px) `,
                     }}>
                         {/* Sun */}
-                        <div className="sun"></div>
+                        {planets.length !== 0 && <div className="sun"></div>}
                         {planets.map((planet, index) => {
                             // Generar valores aleatorios para cada iteración
                             // Radio entre 100 y 300
@@ -352,8 +285,8 @@ const SolarSystem = ({ planets = [], TD, loading, setSelectedPlanet, selectedPla
                                         key={"orbit " + index}
                                         style={{
                                             position: 'absolute',
-                                            top: '50%',
-                                            left: '50%',
+                                            top: topPos,
+                                            left: leftPos,
                                             border: '1px solid #112B3D',
                                             borderRadius: '50%',
                                             width: `${planetPositions[index]?.semiejeMayor}px`,
@@ -382,7 +315,8 @@ const SolarSystem = ({ planets = [], TD, loading, setSelectedPlanet, selectedPla
                                 </div>
                             );
                         })}
-                    </div>
+
+                    </div>}
                 </div>
             </Draggable>
         </div>

@@ -1,3 +1,13 @@
+@import url('https://fonts.cdnfonts.com/css/nasalization-2');
+
+body {
+  font-family: 'Nasalization', sans-serif;
+}
+
+.font {
+  font-family: 'Nasalization', sans-serif;
+}
+
 .system-info {
   position: absolute;
   right: 3%;
@@ -20,20 +30,164 @@
 }
 
 .system-info::-webkit-scrollbar {
-  width: 5px; /* Ancho de la barra de desplazamiento */
+  width: 5px;
+  /* Ancho de la barra de desplazamiento */
 }
 
 .system-info::-webkit-scrollbar-track {
-  background: transparent; /* Color de fondo de la pista de la barra de desplazamiento */
+  background: transparent;
+  /* Color de fondo de la pista de la barra de desplazamiento */
 }
 
 .system-info::-webkit-scrollbar-thumb {
-  background-color: white; /* Color del control deslizante de la barra de desplazamiento */
-  border-radius: 10px; /* Redondeo de las esquinas del control deslizante */
+  background-color: white;
+  /* Color del control deslizante de la barra de desplazamiento */
+  border-radius: 10px;
+  /* Redondeo de las esquinas del control deslizante */
 }
 
 /* Para otros navegadores que no sean de WebKit, puedes usar scrollbar-color y scrollbar-width */
 .system-info {
-  scrollbar-color: white transparent; /* Color del control deslizante y de la pista */
-  scrollbar-width: thin; /* Ancho de la barra de desplazamiento */
+  scrollbar-color: white transparent;
+  /* Color del control deslizante y de la pista */
+  scrollbar-width: thin;
+  /* Ancho de la barra de desplazamiento */
+}
+
+@keyframes popupAnimation {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.popupElement {
+  animation: popupAnimation 0.2s ease-out forwards;
+}
+
+.search-bar-container {
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: clamp(300px, 25vw, 500px);
+  padding: 2;
+  /* Asegúrate de definir la unidad de medida (px, em, etc.) */
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.fadeIn {
+  animation: fadeIn 1s forwards;
+}
+
+.fadeOut {
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes moveToCenter {
+  from {
+    top: 0;
+    /* transform: translate(-50%, 0%); */
+  }
+
+  to {
+    top: 50%;
+    /* transform: translate(-50%, -50%);*/
+  }
+}
+
+.search-bar-container.moveToCenter {
+  animation: moveToCenter 0.5s forwards;
+}
+
+@keyframes moveFromCenter {
+  from {
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  to {
+    top: -3%;
+    transform: translate(-50%, 0%);
+  }
+}
+
+.search-bar-container.moveFromCenter {
+  animation: moveFromCenter 0.5s forwards;
+}
+
+.mobile-info {
+  display: none;
+}
+
+/* Estilos para PC */
+.visibilityIcon {
+  position: absolute;
+  left: 7%;
+  /* Posición predeterminada para PC */
+  top: 7%;
+  /* Posición predeterminada para PC */
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.threeDRotationIcon {
+  position: absolute;
+  left: 10%;
+  /* Posición predeterminada para PC */
+  top: 7%;
+  /* Posición predeterminada para PC */
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* Estilos responsivos para tablets y móviles */
+@media (max-width: 768px) {
+
+  .visibilityIcon {
+    left: 55%;
+    /* Centrado horizontal */
+    top: 5.5rem !important;
+    /* Posición hacia la parte superior */
+    transform: translateX(-50%);
+    /* Ajuste fino para centrar exactamente los íconos */
+  }
+
+  .threeDRotationIcon {
+    left: 45% !important;
+    top: 11rem !important;
+    transform: translateX(-50%) !important;
+  }
 }

@@ -10,6 +10,7 @@ import { useState } from 'react';
 // Estilos personalizados para el Accordion
 const CustomAccordion = styled(Accordion)({
     background: 'transparent',
+    fontFamily: 'Nasalization',
     color: 'white',
     '&:not(:last-child)': {
         borderBottom: 0,
@@ -22,6 +23,7 @@ const CustomAccordion = styled(Accordion)({
 const CustomAccordionSummary = styled(AccordionSummary)({
     flexDirection: 'row-reverse', // Invierte el orden de los elementos para centrar el título
     justifyContent: 'center', // Centra el contenido
+    fontFamily: 'Nasalization, Arial, sans-serif',
     '.MuiAccordionSummary-expandIconWrapper.Mui-expanded': {
         transform: 'rotate(90deg)',
     },
@@ -39,7 +41,7 @@ const CustomAccordionDetails = styled(AccordionDetails)({
 });
 
 // Componente PlanetAccordion
-const PlanetAccordion = ({ planets, setSelectedPlanet }) => {
+const PlanetAccordion = ({ planets, setSelectedPlanet, showSystem }) => {
 
     const [expanded, setExpanded] = useState(false); // Estado para manejar el panel expandido
 
@@ -49,7 +51,7 @@ const PlanetAccordion = ({ planets, setSelectedPlanet }) => {
     };
 
     return (
-        <div>
+        <div className={'pc-info' + showSystem ? 'fadeIn' : 'fadeOut'}>
             {planets?.map((planet, index) => (
                 <CustomAccordion
                     key={planet.pl_name}
@@ -60,10 +62,10 @@ const PlanetAccordion = ({ planets, setSelectedPlanet }) => {
                         aria-controls={`panel${index}a-content`}
                         id={`panel${index}a-header`}
                     >
-                        <Typography>{planet.pl_name}</Typography>
+                        <Typography style={{ fontFamily: 'Nasalization, Arial', fontSize: '1.5rem' }}>{planet.pl_name}</Typography>
                     </CustomAccordionSummary>
                     <CustomAccordionDetails>
-                        <Typography>
+                        <Typography style={{ fontFamily: 'Nasalization, Arial', fontSize: '1.5rem' }}>
                             Masa: {planet.pl_mass || '???'} masas terrestres<br />
                             Radio: {planet.pl_rade || '???'} radios terrestres<br />
                             Periodo orbital: {planet.pl_orbper || '???'} días<br />
@@ -74,7 +76,7 @@ const PlanetAccordion = ({ planets, setSelectedPlanet }) => {
                     </CustomAccordionDetails>
                 </CustomAccordion>
             ))}
-        </div>
+        </div >
     );
 };
 

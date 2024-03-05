@@ -1,0 +1,98 @@
+.loading-wrapper {
+    position: fixed;
+    /* Cambiado a fixed para centrar en la pantalla */
+    top: 50%;
+    /* Centra verticalmente */
+    left: 50%;
+    /* Centra horizontalmente */
+    transform: translate(-50%, -50%);
+    /* Ajusta el centrado basado en las dimensiones del elemento */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    /* Ajusta según sea necesario */
+    width: 100px;
+    /* Ajusta según sea necesario */
+}
+
+.sphere {
+    background-color: white;
+    border-radius: 50%;
+    height: 60px;
+    /* Ajusta según sea necesario */
+    width: 60px;
+    /* Ajusta según sea necesario */
+}
+
+.circle {
+    position: absolute;
+    border: 2px solid white;
+    border-radius: 50%;
+    height: 200%;
+    /* Igual al loading-wrapper */
+    width: 200%;
+    /* Igual al loading-wrapper */
+}
+
+.dot {
+    position: absolute;
+    background-color: white;
+    border-radius: 50%;
+    height: 10px;
+    /* Ajusta según sea necesario */
+    width: 10px;
+    /* Ajusta según sea necesario */
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg) translateY(100px);
+        animation-timing-function: ease-out;
+    }
+
+    50% {
+        animation-timing-function: ease-in;
+    }
+
+    100% {
+        transform: rotate(360deg) translateY(100px);
+    }
+}
+
+
+@keyframes fadeOutLoading {
+    from {
+        opacity: 1;
+        /* Ajusta este valor según sea necesario */
+        /* opacity: 0; */
+    }
+
+    to {
+        opacity: 0;
+        /* opacity: 1; */
+    }
+}
+
+.fadeOutLoading {
+    animation: fadeOutLoading 0.2s forwards;
+}
+
+
+@keyframes fadeInLoading {
+    from {
+        opacity: 0;
+        /* Ajusta este valor según sea necesario */
+        /* opacity: 0; */
+    }
+
+    to {
+        opacity: 1;
+        /* opacity: 1; */
+    }
+}
+
+.fadeInLoading {
+    animation: fadeInLoading 0.5s forwards;
+}
